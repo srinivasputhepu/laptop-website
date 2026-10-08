@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHub - Laptop Store</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-header {
+            max-width: 1200px;
+            margin: auto;
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 12px 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1565c0;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff6f00;
+        }
+
+        .search {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1px solid #d5d5d5;
+            border-radius: 30px;
+            outline: none;
+            background: #f6f7f9;
+            font-size: 15px;
+        }
+
+        .search input:focus {
+            border-color: #1565c0;
+            background: white;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .header-button {
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .header-button .icon {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+
+        .cart {
+            background: #1565c0;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            background: #1565c0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            padding: 14px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffcc80;
+        }
+
+        /* HERO */
+
+        .hero {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        .hero-box {
+            min-height: 330px;
+            border-radius: 20px;
+            padding: 50px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            background: linear-gradient(
+                120deg,
+                #e3f2fd,
+                #f3e5f5
+            );
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content small {
+            color: #e65100;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .hero-content h1 {
+            color: #0d47a1;
+            font-size: 45px;
+            margin: 12px 0;
+            line-height: 1.15;
+        }
+
+        .hero-content p {
+            color: #555;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background: #1565c0;
+            color: white;
+            text-decoration: none;
+            padding: 13px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .shop-button:hover {
+            background: #0d47a1;
+        }
+
+        .hero-laptop {
+            font-size: 170px;
+        }
+
+        /* GENERAL SECTION */
+
+        .section {
+            max-width: 1200px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 26px;
+        }
+
+        .view-all {
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* CATEGORIES */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+        }
+
+        .category {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 25px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #222;
+            transition: 0.2s;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .category-icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        .category h3 {
+            font-size: 14px;
+        }
+
+        /* OFFER */
+
+        .offer {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 15px;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .offer h2 {
+            color: #e65100;
+            margin-bottom: 8px;
+        }
+
+        .offer p {
+            color: #555;
+        }
+
+        .offer-code {
+            background: #ff6f00;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* PRODUCTS */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.09);
+        }
+
+        .discount {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #e53935;
+            color: white;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 5px;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 180px;
+            border-radius: 12px;
+            background: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 95px;
+            margin-bottom: 15px;
+        }
+
+        .product h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            min-height: 38px;
+        }
+
+        .specs {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: #f9a825;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .old-price {
+            color: #999;
+            font-size: 11px;
+            text-decoration: line-through;
+            margin-left: 3px;
+        }
+
+        .add-button {
+            border: 1px solid #1565c0;
+            color: #1565c0;
+            background: white;
+            padding: 7px 12px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #1565c0;
+            color: white;
+        }
+
+        /* FEATURES */
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #151515;
+            color: white;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            color: #64b5f6;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-about p {
+            color: #aaa;
+            line-height: 1.7;
+            font-size: 14px;
+            max-width: 350px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 18px;
+            font-size: 16px;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .copyright {
+            border-top: 1px solid #333;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .categories {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-content h1 {
+                font-size: 35px;
+            }
+
+            .hero-laptop {
+                font-size: 110px;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .top-header {
+                flex-wrap: wrap;
+                padding: 15px;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .header-button:not(.cart) {
+                display: none;
+            }
+
+            .nav-container {
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 25px;
+            }
+
+            .hero-box {
+                padding: 30px;
+            }
+
+            .hero-content h1 {
+                font-size: 32px;
+            }
+
+            .hero-laptop {
+                display: none;
+            }
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .offer {
+                display: block;
+            }
+
+            .offer-code {
+                display: inline-block;
+                margin-top: 15px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="top-header">
+
+            <div class="logo">
+                Tech<span>Hub</span>
+            </div>
+
+            <div class="search">
+                <input
+                    type="text"
+                    placeholder="Search laptops, brands, processors..."
+                >
+            </div>
+
+            <div class="header-buttons">
+
+                <a href="#" class="header-button">
+                    <span class="icon">👤</span>
+                    Account
+                </a>
+
+                <a href="#" class="header-button">
+                    <span class="icon">❤️</span>
+                    Wishlist
+                </a>
+
+                <a href="#" class="header-button cart">
+                    🛒 Cart
+                </a>
+
+            </div>
+
+        </div>
+
+        <nav>
+
+            <div class="nav-container">
+
+                <a href="#">Home</a>
+                <a href="#categories">Categories</a>
+                <a href="#products">Laptops</a>
+                <a href="#offers">Offers</a>
+                <a href="#brands">Brands</a>
+                <a href="#contact">Contact</a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-box">
+
+            <div class="hero-content">
+
+                <small>POWERFUL. FAST. RELIABLE.</small>
+
+                <h1>
+                    Find the perfect laptop for you.
+                </h1>
+
+                <p>
+                    Explore powerful laptops for work, gaming,
+                    college, business and everyday use.
+                </p>
+
+                <a href="#products" class="shop-button">
+                    Shop Laptops →
+                </a>
+
+            </div>
+
+            <div class="hero-laptop">
+                💻
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORIES -->
+
+    <section class="section" id="categories">
+
+        <div class="section-header">
+
+            <h2>Shop by Category</h2>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+        <div class="categories">
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    💼
+                </div>
+
+                <h3>Business</h3>
+
+            </a>
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    🎮
+                </div>
+
+                <h3>Gaming</h3>
+
+            </a>
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    🎓
+                </div>
+
+                <h3>Student</h3>
+
+            </a>
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    👨‍💻
+                </div>
+
+                <h3>Developer</h3>
+
+            </a>
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    🎨
+                </div>
+
+                <h3>Creator</h3>
+
+            </a>
+
+            <a href="#" class="category">
+
+                <div class="category-icon">
+                    ⚡
+                </div>
+
+                <h3>Ultrabooks</h3>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- OFFER -->
+
+    <section class="section" id="offers">
+
+        <div class="offer">
+
+            <div>
+
+                <h2>
+                    🔥 Laptop Sale - Up to 30% OFF
+                </h2>
+
+                <p>
+                    Get exciting discounts on selected laptops.
+                    Limited-time offer.
+                </p>
+
+            </div>
+
+            <div class="offer-code">
+                LAPTOP30
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+
+    <section class="section" id="products">
+
+        <div class="section-header">
+
+            <h2>
+                Featured Laptops
+            </h2>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="products">
+
+
+            <!-- LAPTOP 1 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    18% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    Dell Inspiron 15
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i5 • 13th Gen<br>
+                    16GB RAM • 512GB SSD<br>
+                    15.6" Full HD Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.7
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹59,999
+                        </span>
+
+                        <span class="old-price">
+                            ₹72,999
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 2 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    22% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    HP Pavilion 14
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i5 • 13th Gen<br>
+                    16GB RAM • 512GB SSD<br>
+                    14" Full HD Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.8
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹64,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹82,999
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 3 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    15% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    Lenovo IdeaPad Slim 5
+                </h3>
+
+                <div class="specs">
+
+                    AMD Ryzen 7 • 7000 Series<br>
+                    16GB RAM • 1TB SSD<br>
+                    15.6" OLED Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.6
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹69,490
+                        </span>
+
+                        <span class="old-price">
+                            ₹81,999
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 4 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    25% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    ASUS Vivobook 15
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i5 • 12th Gen<br>
+                    16GB RAM • 512GB SSD<br>
+                    15.6" Full HD Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.5
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹54,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹72,990
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 5 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    12% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    Acer Aspire 5
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i5 • 13th Gen<br>
+                    16GB RAM • 512GB SSD<br>
+                    15.6" Full HD Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.4
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹57,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹65,999
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 6 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    20% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    MSI Gaming Thin
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i7 • 13th Gen<br>
+                    16GB RAM • 1TB SSD<br>
+                    RTX 4050 • 15.6" 144Hz
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.8
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹89,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹1,12,999
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 7 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    10% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    Apple MacBook Air
+                </h3>
+
+                <div class="specs">
+
+                    Apple M2 Chip<br>
+                    8GB RAM • 256GB SSD<br>
+                    13.6" Liquid Retina Display
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.9
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹89,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹99,900
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LAPTOP 8 -->
+
+            <div class="product">
+
+                <div class="discount">
+                    16% OFF
+                </div>
+
+                <div class="product-image">
+                    💻
+                </div>
+
+                <h3>
+                    Lenovo LOQ Gaming
+                </h3>
+
+                <div class="specs">
+
+                    Intel Core i7 • 13th Gen<br>
+                    16GB RAM • 1TB SSD<br>
+                    RTX 4060 • 15.6" 144Hz
+
+                </div>
+
+                <div class="rating">
+                    ★★★★★ 4.8
+                </div>
+
+                <div class="price-row">
+
+                    <div>
+
+                        <span class="price">
+                            ₹94,990
+                        </span>
+
+                        <span class="old-price">
+                            ₹1,12,990
+                        </span>
+
+                    </div>
+
+                    <button class="add-button">
+                        ADD
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section class="section">
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🚚
+                </div>
+
+                <h3>
+                    Fast Delivery
+                </h3>
+
+                <p>
+                    Get your laptop delivered safely
+                    and quickly to your doorstep.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    Genuine Products
+                </h3>
+
+                <p>
+                    Buy genuine laptops with
+                    manufacturer warranty.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    💳
+                </div>
+
+                <h3>
+                    Secure Payment
+                </h3>
+
+                <p>
+                    Safe and secure payment options
+                    for every purchase.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔄
+                </div>
+
+                <h3>
+                    Easy Returns
+                </h3>
+
+                <p>
+                    Hassle-free returns and
+                    customer support.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BRANDS -->
+
+    <section class="section" id="brands">
+
+        <div class="section-header">
+
+            <h2>
+                Popular Brands
+            </h2>
+
+        </div>
+
+        <div class="categories">
+
+            <a href="#" class="category">
+                <div class="category-icon">🍎</div>
+                <h3>Apple</h3>
+            </a>
+
+            <a href="#" class="category">
+                <div class="category-icon">💻</div>
+                <h3>Dell</h3>
+            </a>
+
+            <a href="#" class="category">
+                <div class="category-icon">💻</div>
+                <h3>HP</h3>
+            </a>
+
+            <a href="#" class="category">
+                <div class="category-icon">💻</div>
+                <h3>Lenovo</h3>
+            </a>
+
+            <a href="#" class="category">
+                <div class="category-icon">💻</div>
+                <h3>ASUS</h3>
+            </a>
+
+            <a href="#" class="category">
+                <div class="category-icon">💻</div>
+                <h3>Acer</h3>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer id="contact">
+
+        <div class="footer-container">
+
+            <div class="footer-about">
+
+                <div class="footer-logo">
+                    TechHub
+                </div>
+
+                <p>
+                    Your trusted destination for laptops,
+                    computers and technology products.
+                    Find the right laptop for work,
+                    gaming, education and everyday use.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Quick Links
+                </h3>
+
+                <a href="#">Home</a>
+                <a href="#products">Laptops</a>
+                <a href="#categories">Categories</a>
+                <a href="#offers">Offers</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Customer Service
+                </h3>
+
+                <a href="#">Help Center</a>
+                <a href="#">Delivery Information</a>
+                <a href="#">Returns</a>
+                <a href="#">Warranty</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Contact Us
+                </h3>
+
+                <a href="#">
+                    📞 +91 98765 43210
+                </a>
+
+                <a href="#">
+                    ✉ support@techhub.com
+                </a>
+
+                <a href="#">
+                    📍 Hyderabad, India
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 TechHub. All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+</body>
+</html>

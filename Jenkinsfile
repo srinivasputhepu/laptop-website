@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -8,15 +9,25 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
 
+    environment {
+        IMAGE_NAME = 'srinivasputhepu/laptop-website'
+    }
+
     stages {
+        stage('Checkout SCM') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/srinivasputhepu/laptop-website.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
-                sh """
+                sh '''
                     docker build \
-                    -t srinivasputhepu/laptop-website:${env.BUILD_NUMBER} \
-                    -t srinivasputhepu/laptop-website:latest .
-                """
+                        -t ${IMAGE_NAME}:${BUILD_NUMBER} \
+                        -t ${IMAGE_NAME}:latest .
+                '''
             }
         }
 
@@ -29,17 +40,16 @@ pipeline {
                         passwordVariable: 'DOCKER_TOKEN'
                     )
                 ]) {
-                    sh """
-                        echo "\$DOCKER_TOKEN" | docker login \
-                        -u "\$DOCKER_USER" \
-                        --password-stdin
+                    sh '''
+                        set -eu
+                        echo "$DOCKER_TOKEN" | docker login \
+                            -u "$DOCKER_USER" --password-stdin
 
-                        docker push srinivasputhepu/laptop-website:${env.BUILD_NUMBER}
-
-                        docker push srinivasputhepu/laptop-website:latest
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
 
                         docker logout
-                    """
+                    '''
                 }
             }
         }
@@ -47,15 +57,13 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline Finished'
+            echo 'Pipeline finished.'
         }
-
         success {
-            echo 'Docker image successfully pushed to Docker Hub'
+            echo 'Docker image pushed successfully.'
         }
-
         failure {
-            echo 'Pipeline Failed'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
 }

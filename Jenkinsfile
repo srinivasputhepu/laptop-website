@@ -11,6 +11,9 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'srinivasputhepu/laptop-website'
+        EC2_HOST = '16.4.32.4'
+        EC2_USER = 'ubuntu'
+        CONTAINER_NAME = 'laptop-website'
     }
 
     stages {
@@ -24,6 +27,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
+                    set -eu
                     docker build \
                         -t ${IMAGE_NAME}:${BUILD_NUMBER} \
                         -t ${IMAGE_NAME}:latest .
@@ -53,6 +57,30 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to EC2') {
+            steps {
+                sshagent(credentials: ['aws-ec2-key']) {
+                    sh '''
+                        set -eu
+
+                        IMAGE_TAG="${IMAGE_NAME}:${BUILD_NUMBER}"
+
+                        ssh \
+                            -o StrictHostKeyChecking=no \
+                            -o ConnectTimeout=15 \
+                            "${EC2_USER}@${EC2_HOST}" \
+                            "docker pull ${IMAGE_TAG} &&
+                             (docker rm -f ${CONTAINER_NAME} || true) &&
+                             docker run -d
+                               --name ${CONTAINER_NAME}
+                               --restart unless-stopped
+                               -p 80:80
+                               ${IMAGE_TAG}"
+                    '''
+                }
+            }
+        }
     }
 
     post {
@@ -60,7 +88,7 @@ pipeline {
             echo 'Pipeline finished.'
         }
         success {
-            echo 'Docker image pushed successfully.'
+            echo 'Image built, pushed, and deployed to EC2 successfully.'
         }
         failure {
             echo 'Pipeline failed. Check Console Output.'

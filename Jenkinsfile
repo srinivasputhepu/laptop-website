@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'srinivasputhepu/laptop-website'
-        EC2_HOST = '16.4.32.4'
+        EC2_HOST = '15.206.194.54'
         EC2_USER = 'ubuntu'
         CONTAINER_NAME = 'laptop-website'
     }

@@ -58,29 +58,25 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-            steps {
-                sshagent(credentials: ['aws-ec2-key']) {
-                    sh '''
-                        set -eu
 
-                        IMAGE_TAG="${IMAGE_NAME}:${BUILD_NUMBER}"
+stage('Deploy to EC2') {
+    steps {
+        sshagent(credentials: ['aws-ec2-key']) {
+            sh '''
+                set -eu
 
-                        ssh \
-                            -o StrictHostKeyChecking=no \
-                            -o ConnectTimeout=120 \
-                            "${EC2_USER}@${EC2_HOST}" \
-                            "docker pull ${IMAGE_TAG} &&
-                             (docker rm -f ${CONTAINER_NAME} || true) &&
-                             docker run -d
-                               --name ${CONTAINER_NAME}
-                               --restart unless-stopped
-                               -p 80:80
-                               ${IMAGE_TAG}"
-                    '''
-                }
-            }
+                ssh \
+                    -o StrictHostKeyChecking=no \
+                    -o ConnectTimeout=120 \
+                    ubuntu@15.206.194.54 \
+                    "set -e;
+                     docker pull srinivasputhepu/laptop-website:${BUILD_NUMBER};
+                     docker rm -f laptop-website >/dev/null 2>&1 || true;
+                     docker run -d --name laptop-website --restart unless-stopped -p 80:80 srinivasputhepu/laptop-website:${BUILD_NUMBER}"
+            '''
         }
+    }
+}
     }
 
     post {

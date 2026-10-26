@@ -68,7 +68,7 @@ pipeline {
 
                         ssh \
                             -o StrictHostKeyChecking=no \
-                            -o ConnectTimeout=15 \
+                            -o ConnectTimeout=120 \
                             "${EC2_USER}@${EC2_HOST}" \
                             "docker pull ${IMAGE_TAG} &&
                              (docker rm -f ${CONTAINER_NAME} || true) &&

@@ -24,6 +24,28 @@ pipeline {
             }
         }
 
+	
+stage('Test Website') {
+    steps {
+        sh '''
+            set -eu
+
+            echo "Checking whether index.html exists..."
+
+            test -f index.html
+
+            echo "Checking HTML content..."
+
+            grep -qi "<html" index.html
+            grep -qi "<body" index.html
+
+            echo "Website tests passed!"
+        '''
+    }
+}
+
+	
+
         stage('Build Docker Image') {
             steps {
                 sh '''

@@ -39,7 +39,8 @@ stage('Test Website') {
             grep -qi "<html" index.html
             grep -qi "<body" index.html
 
-            echo "Website tests passed!"
+            echo "simulating a test failure"
+		exit 1
         '''
     }
 }

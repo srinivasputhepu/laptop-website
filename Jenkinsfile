@@ -90,7 +90,7 @@ stage('Deploy to EC2') {
                 ssh \
                     -o StrictHostKeyChecking=no \
                     -o ConnectTimeout=120 \
-                    ubuntu@3.110.166.125 \
+                    ubuntu@13.235.74.228 \
                     "set -e;
                      docker pull srinivasputhepu/laptop-website:${BUILD_NUMBER};
                      docker rm -f laptop-website >/dev/null 2>&1 || true;

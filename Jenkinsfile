@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'srinivasputhepu/laptop-website'
-        EC2_HOST = '3.110.166.125'
+        EC2_HOST = '13.235.74.228'
         EC2_USER = 'ubuntu'
         CONTAINER_NAME = 'laptop-website'
     }
@@ -99,6 +99,39 @@ stage('Deploy to EC2') {
         }
     }
 }
+
+
+stage('Deployment Health Check') {
+    steps {
+        sshagent(credentials: ['aws-ec2-key']) {
+            sh '''
+                set -eu
+
+                echo "Checking website health on EC2..."
+
+                for attempt in 1 2 3 4 5; do
+                    if ssh \
+                        -o StrictHostKeyChecking=no \
+                        -o ConnectTimeout=10 \
+                        ubuntu@${EC2_HOST} \
+                        "curl -fsS http://localhost/ > /dev/null"; then
+
+                        echo "Health check passed!"
+                        exit 0
+                    fi
+
+                    echo "Attempt ${attempt} failed. Retrying..."
+                    sleep 5
+                done
+
+                echo "Health check failed after 5 attempts."
+                exit 1
+            '''
+        }
+    }
+}
+
+
     }
 
     post {

@@ -25,24 +25,24 @@ pipeline {
         }
 
 	
-stage('Test Website') {
-    steps {
-        sh '''
-            set -eu
+	stage('Test Website') {
+	    steps {
+	        sh '''
+	            set -eu
 
-            echo "Checking whether index.html exists..."
+	            echo "Checking whether index.html exists..."
 
-            test -f index.html
+	            test -f index.html
 
-            echo "Checking HTML content..."
+	            echo "Checking HTML content..."
 
-            grep -qi "<html" index.html
-            grep -qi "<body" index.html
+	            grep -qi "<html" index.html
+	            grep -qi "<body" index.html
 
-            echo "website tests passed"
-        '''
-    }
-}
+	            echo "website tests passed"
+	        '''
+	    }
+	}
 
 	
 
@@ -81,55 +81,95 @@ stage('Test Website') {
         }
 
 
-stage('Deploy to EC2') {
-    steps {
-        sshagent(credentials: ['aws-ec2-key']) {
-            sh '''
-                set -eu
 
-                ssh \
-                    -o StrictHostKeyChecking=no \
-                    -o ConnectTimeout=120 \
-                    ubuntu@13.235.74.228 \
-                    "set -e;
-                     docker pull srinivasputhepu/laptop-website:${BUILD_NUMBER};
-                     docker rm -f laptop-website >/dev/null 2>&1 || true;
-                     docker run -d --name laptop-website --restart unless-stopped -p 80:80 srinivasputhepu/laptop-website:${BUILD_NUMBER}"
-            '''
-        }
-    }
-}
+	stage('Deploy and Verify') {
+	    steps {
+	        sshagent(credentials: ['aws-ec2-key']) {
+	            sh '''
+	                set -eu
 
+	                echo "Starting deployment..."
 
-stage('Deployment Health Check') {
-    steps {
-        sshagent(credentials: ['aws-ec2-key']) {
-            sh '''
-                set -eu
+	                ssh \
+	                    -o StrictHostKeyChecking=no \
+	                    -o ConnectTimeout=120 \
+	                    ubuntu@${EC2_HOST} \
+	                    "BUILD_NUMBER=${BUILD_NUMBER} bash -s" <<'REMOTE'
+	                set -eu
 
-                echo "Checking website health on EC2..."
+	                IMAGE_NAME='srinivasputhepu/laptop-website'
+	                NEW_IMAGE="${IMAGE_NAME}:${BUILD_NUMBER}"
+	                CONTAINER_NAME='laptop-website'
 
-                for attempt in 1 2 3 4 5; do
-                    if ssh \
-                        -o StrictHostKeyChecking=no \
-                        -o ConnectTimeout=10 \
-                        ubuntu@${EC2_HOST} \
-                        "curl -fsS http://localhost/ > /dev/null"; then
+	                echo "Recording the current image..."
 
-                        echo "Health check passed!"
-                        exit 0
-                    fi
+	                PREVIOUS_IMAGE=$(docker inspect \
+	                    --format='{{.Config.Image}}' \
+	                    "$CONTAINER_NAME" 2>/dev/null || true)
 
-                    echo "Attempt ${attempt} failed. Retrying..."
-                    sleep 5
-                done
+	                echo "Previous image: ${PREVIOUS_IMAGE:-none}"
+	                echo "New image: $NEW_IMAGE"
 
-                echo "Health check failed after 5 attempts."
-                exit 1
-            '''
-        }
-    }
-}
+	                echo "Pulling new image..."
+	                docker pull "$NEW_IMAGE"
+
+	                echo "Replacing the container..."
+	                docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+
+	                if ! docker run -d \
+	                    --name "$CONTAINER_NAME" \
+	                    --restart unless-stopped \
+	                    -p 80:80 \
+	                    "$NEW_IMAGE"; then
+
+	                    echo "New container failed to start."
+	                    if [ -n "$PREVIOUS_IMAGE" ]; then
+	                        echo "Rolling back to $PREVIOUS_IMAGE..."
+	                        docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+	                        docker run -d \
+	                            --name "$CONTAINER_NAME" \
+	                            --restart unless-stopped \
+	                            -p 80:80 \
+	                            "$PREVIOUS_IMAGE"
+	                    fi
+	                    exit 1
+	                fi
+
+	                echo "Checking website health..."
+
+	                for attempt in 1 2 3 4 5; do
+	                    if curl -fsS http://localhost/ >/dev/null; then
+	                        echo "Deployment health check passed!"
+	                        exit 0
+	                    fi
+
+	                    echo "Attempt $attempt failed. Retrying..."
+	                    sleep 5
+	                done
+
+	                echo "Health check failed. Rolling back..."
+
+	                docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+
+	                if [ -n "$PREVIOUS_IMAGE" ]; then
+	                    docker run -d \
+	                        --name "$CONTAINER_NAME" \
+	                        --restart unless-stopped \
+	                        -p 80:80 \
+	                        "$PREVIOUS_IMAGE"
+
+	                    echo "Rollback container started."
+	                else
+	                    echo "No previous image available for rollback."
+	                fi
+
+	                exit 1
+	                REMOTE
+	            '''
+	        }
+	    }
+	}
+
 
 
     }

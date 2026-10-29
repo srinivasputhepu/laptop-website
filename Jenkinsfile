@@ -135,20 +135,26 @@ pipeline {
 	                    exit 1
 	                fi
 
-	                echo "Checking website health..."
-			exit 1
 
-	                for attempt in 1 2 3 4 5; do
-	                    if curl -fsS http://localhost/ >/dev/null; then
-	                        echo "Deployment health check passed!"
-	                        exit 0
-	                    fi
+				echo "Checking website health..."
 
-	                    echo "Attempt $attempt failed. Retrying..."
-	                    sleep 5
-	                done
+				HEALTH_OK=false
 
-	                echo "Simulating health-check failure for rollback test."
+				for attempt in 1 2 3 4 5; do
+				    if curl -fsS http://localhost/ >/dev/null; then
+				        echo "Deployment health check passed!"
+				        HEALTH_OK=true
+				        break
+				    fi
+
+				    echo "Attempt ${attempt} failed. Retrying..."
+				    sleep 5
+				done
+
+				if [ "$HEALTH_OK" = true ]; then
+				    exit 0
+				fi
+
 				echo "Health check failed. Rolling back..."
 
 				docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true

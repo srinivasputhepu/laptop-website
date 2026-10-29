@@ -136,6 +136,7 @@ pipeline {
 	                fi
 
 	                echo "Checking website health..."
+			exit 1
 
 	                for attempt in 1 2 3 4 5; do
 	                    if curl -fsS http://localhost/ >/dev/null; then
@@ -147,23 +148,24 @@ pipeline {
 	                    sleep 5
 	                done
 
-	                echo "Health check failed. Rolling back..."
+	                echo "Simulating health-check failure for rollback test."
+				echo "Health check failed. Rolling back..."
 
-	                docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+				docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
 
-	                if [ -n "$PREVIOUS_IMAGE" ]; then
-	                    docker run -d \
-	                        --name "$CONTAINER_NAME" \
-	                        --restart unless-stopped \
-	                        -p 80:80 \
-	                        "$PREVIOUS_IMAGE"
+				if [ -n "$PREVIOUS_IMAGE" ]; then
+				    docker run -d \
+				        --name "$CONTAINER_NAME" \
+				        --restart unless-stopped \
+				        -p 80:80 \
+				        "$PREVIOUS_IMAGE"
 
-	                    echo "Rollback container started."
-	                else
-	                    echo "No previous image available for rollback."
-	                fi
+				    echo "Rollback container started."
+				else
+				    echo "No previous image available for rollback."
+				fi
 
-	                exit 1
+				exit 1
 	                REMOTE
 	            '''
 	        }
